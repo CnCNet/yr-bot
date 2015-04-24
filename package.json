@@ -1,0 +1,29 @@
+{
+  "name": "yr-bot",
+  "version": "1.0.0",
+  "description": "A simple IRC bot for CnCNet servers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CnCNet/yr-bot.git"
+  },
+  "keywords": [
+    "node",
+    "irc",
+    "cncnet"
+  ],
+  "author": "Grant Bartlett",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CnCNet/yr-bot/issues"
+  },
+  "homepage": "https://github.com/CnCNet/yr-bot",
+  "devDependencies": {
+    "irc": "^0.3.11",
+    "irc-colors": "^1.1.0",
+    "pm2": "^0.12.12"
+  }
+}
