@@ -7,6 +7,8 @@ A simple nodejs application to have a bot appear in the cncnet irc channel.
 - Ability to edit the message without disconnecting from a channel.
 - Ability to add/remove a list of messages to be announced. 
 - Change message in a simple and secure web interface. 
+- Configure bot to respond to direct messages.
+- Configure bot to listen to certain keywords and trigger a response.
 
 ##Installation
 
