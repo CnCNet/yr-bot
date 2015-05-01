@@ -1,30 +1,15 @@
-/***
- * Configure settings for bot
- * @type {{channels: string[], server: string, botName: string, repeatMsg: string}}
+/**
+ * Require a few things to get going
+ * @type {exports}
  */
-var config = {
-        channels: ["#yr"],
-        server: "irc.cncnet.org",
-        botName: "test-",
-        repeatMsg: "Hello"
-    },
+var config = require('./config'),
+    init = require('./init'),
     irc = require('irc'),
-    color = require('irc-colors'),
-    minutes = 5,
-    the_interval = minutes * 60 * 1000;
+    announce = require('./repeatMessage');
 
-/**
- * YR Bot
- * @type {exports.Client}
- */
-var yr_bot = new irc.Client(config.server, config.botName, {
-    channels: config.channels
-});
+// Initialise YR BOT
+init.start(config, irc);
 
-/**
- * Repeat message globally every x minutes
- * @see var minutes
- */
-setInterval(function () {
-    yr_bot.say(config.channels[0], color.pink(config.repeatMsg));
-}, the_interval);
+// Config, Minutes, Message to announce
+announce.global(config, 3, "Welcome to Yuri's Revenge Online. If you encounter a problem or crash, please post in our support forums at http://cnc-comm.com/community/");
+
