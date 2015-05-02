@@ -14,7 +14,7 @@ var Bot = new irc.Client(config.server, config.name, {
     channels: config.channels
 });
 
-Bot.privmsg = function(target, message) {
+Bot.announce = function(target, message) {
     if (typeof target == 'string') target.split();
     for(var i = 0; i < target.length; i++) {
         Bot.say(target[i], message[i]);
@@ -29,7 +29,7 @@ if (config.repeat) {
     for(var i = 0; i < config.repeat.length; i++) {
         var entry = config.repeat[i];
         setInterval(function () {
-            Bot.privmsg(entry.channels, color.pink(entry.message));
+            Bot.announce(entry.channels, color.pink(entry.message));
         }, entry.interval * 60 * 1000);
     }
 }
