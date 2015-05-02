@@ -2,7 +2,7 @@
   "name": "yr-bot",
   "version": "1.0.0",
   "description": "A simple IRC bot for CnCNet servers",
-  "main": "index.js",
+  "main": "src/bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,9 +21,11 @@
     "url": "https://github.com/CnCNet/yr-bot/issues"
   },
   "homepage": "https://github.com/CnCNet/yr-bot",
-  "devDependencies": {
+  "dependencies": {
     "irc": "^0.3.11",
-    "irc-colors": "^1.1.0",
+    "irc-colors": "^1.1.0"      
+  },    
+  "devDependencies": {
     "pm2": "^0.12.12"
   }
 }
