@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var irc = require('irc'),
+    color = require('irc-colors'),
     config = require('./config.json'),
 
     Bot = new irc.Client(config.server, config.name, {
@@ -18,4 +19,4 @@ msgListener.pm(Bot);
 
 // Auto announce message to lobbies
 // @TODO: Read from a database, and update via a UI
-msgAnnouncer.toAllLobbies(Bot, "#cncnet", "Welcome. Please post any problems at http://cncnet.org/forums. Slow game/black screen? Enable TS-DDRAW in Client Options", 0.3);
+msgAnnouncer.toAllLobbies(Bot, "#cncnet", "Welcome. Please post any problems at http://cncnet.org/forums - Slow game/black screen? Enable TS-DDRAW in Client Options", 0.3, color);
