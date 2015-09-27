@@ -16,10 +16,10 @@ var Bot = new irc.Client(
 );
 
 var messages = [
-    { message: 1 },
-    { message: 2 },
-    { message: 3 },
-    { message: 4 }
+    { message: "Hey Grant-" },
+    { message: "Psst Grant-" },
+    { message: "Pssssst" },
+    { message: "WTF end of the line" }
 ];
 
 // Upon the Bot joining the lobby
