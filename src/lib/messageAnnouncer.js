@@ -1,13 +1,16 @@
+var color = require('irc-colors');
+
 /***
- *  messageAnnouncer.js
- * @type {{global: Function, bar: Function}}
+ * Announce to all lobbies after a period of time
+ * @type {{toAllLobbies: Function}}
  */
 
 module.exports = {
-    toAllLobbies: function (bot, lobby, msg, time, color) {
+    toAllLobbies: function (bot, channel, msg, time) {
         setInterval(function () {
-            bot.say(lobby, color.pink(msg));
+            msg.forEach(function (value) {
+                bot.say(channel, color.pink(value.message));
+            });
         }, time * 60 * 10000);
     }
 };
-

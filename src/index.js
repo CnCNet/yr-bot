@@ -1,22 +1,54 @@
 #!/usr/bin/env node
 
 var irc = require('irc'),
-    color = require('irc-colors'),
-    config = require('./config.json'),
-
-    Bot = new irc.Client(config.server, config.name, {
-        channels: config.channels
-    }),
-
+    config = require('./config'),
     msgListener = require('./lib/messageListener'),
     msgAnnouncer = require('./lib/messageAnnouncer');
 
-// Listen for keywords, and trigger a reply
-msgListener.lobby(Bot);
+var Bot = new irc.Client(
+    config.server,
+    config.nickname, {
+        channels: config.channels,
+        debug: true,
+        floodProtection: true,
+        floodProtectionDelay: 1000
+    }
+);
 
-// Listen for private messages to bot and trigger a reply
-msgListener.pm(Bot);
+var messages = [
+    { message: 1 },
+    { message: 2 },
+    { message: 3 },
+    { message: 4 }
+];
 
-// Auto announce message to lobbies
-// @TODO: Read from a database, and update via a UI
-msgAnnouncer.toAllLobbies(Bot, "#cncnet", "Welcome. Please post any problems at http://cncnet.org/forums - Slow game/black screen? Enable TS-DDRAW in Client Options", 0.3, color);
+// Upon the Bot joining the lobby
+Bot.addListener('join', function (channel, who) {
+    console.log('%s has joined %s', who, channel);
+
+    // Listen for keywords, and trigger a reply
+    msgListener.lobby(Bot);
+
+    // Listen for private messages to bot and trigger a reply
+    msgListener.pm(Bot);
+
+    // Announce messages to all lobbies
+    msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3);
+});
+
+
+Bot.addListener('error', function (message) {
+    console.error('ERROR: %s: %s', message.command, message.args.join(' '));
+});
+
+Bot.addListener('pm', function (nick, message) {
+    console.log('Got private message from %s: %s', nick, message);
+});
+
+Bot.addListener('part', function (channel, who, reason) {
+    console.log('%s has left %s: %s', who, channel, reason);
+});
+
+Bot.addListener('kick', function (channel, who, by, reason) {
+    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
+});
