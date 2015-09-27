@@ -32,8 +32,10 @@ Bot.addListener('join', function (channel, who) {
     // Listen for private messages to bot and trigger a reply
     msgListener.pm(Bot);
 
-    // Announce messages to all lobbies
-    msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3);
+    if (who == config.nickname && channel == '#cncnet') {
+        // Announce messages to #cncnet
+        msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3);
+    }
 });
 
 
