@@ -1,11 +1,5 @@
 {
-  "channels": ["#cncnet"],
-  "server": "irc.freenode.org",
-  "port": 6667,
-  "name": "YuriBot-",
-  "repeat": [{
-    "message": "Hello",
-    "interval": 0.3,
-    "channels": ["#yr"]
-  }]
+  "channels": ["#yr"],
+  "server": "irc.cncnet.org",
+  "name": "YuriBot"
 }

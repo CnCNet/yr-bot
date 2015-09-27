@@ -1,4 +1,5 @@
-var canTalk = true, canDance = true;
+var canTalk = true,
+    canDance = true;
 
 /***
  * messageListener.js
@@ -13,17 +14,17 @@ module.exports = {
                 // TODO: This should probably be in a switch
                 if (message.match(/kaboom/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums');
-                    pauseChat(10000);
+                    pauseChat(20000);
                 }
 
                 if (message.match(/crash/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums');
-                    pauseChat(10000);
+                    pauseChat(20000);
                 }
 
                 if (message.match(/help/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Need help? Please post at our forums http://cncnet.org/forums');
-                    pauseChat(10000);
+                    pauseChat(20000);
                 }
 
                 if (message.match(/dance/) && canDance) {
