@@ -6,11 +6,11 @@ var color = require('irc-colors');
  */
 
 module.exports = {
-    toAllLobbies: function (bot, channel, msg, time) {
-        msg.forEach(function (value) {
-            setInterval(function () {
-                bot.say(channel, color.pink(value.message));
-            }, time * 60 * 10000);
-        });
+    toAllLobbies: function (bot, channel, msgs, time) {
+        setInterval(function() {
+            msgs.forEach(function(msg) {
+                bot.say(channel, color.pink(msg.message));
+            });
+        }, 30000);
     }
 };
