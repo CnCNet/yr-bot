@@ -1,4 +1,4 @@
-var canDance = true;
+var canTalk = true, canDance = true;
 
 /***
  * messageListener.js
@@ -10,16 +10,20 @@ module.exports = {
 
             if (to.match(/^[#&]/)) {
 
-                if (message.match(/kaboom/)) {
+                // TODO: This should probably be in a switch
+                if (message.match(/kaboom/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums');
+                    pauseChat(10000);
                 }
 
-                if (message.match(/crash/)) {
+                if (message.match(/crash/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums');
+                    pauseChat(10000);
                 }
 
-                if (message.match(/help/)) {
+                if (message.match(/help/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Need help? Please post at our forums http://cncnet.org/forums');
+                    pauseChat(10000);
                 }
 
                 if (message.match(/dance/) && canDance) {
@@ -39,7 +43,7 @@ module.exports = {
                     }, 5000);
 
                     // That's enough dancing for now
-                    stopDancing(50000);
+                    pauseDancing(50000);
 
                 } else if (message.match(/dance/) && !canDance) {
                     bot.say(to, 'I cannot be overcome');
@@ -50,18 +54,29 @@ module.exports = {
     pm: function (bot) {
         bot.addListener('pm', function (nick, message) {
             console.log('Got private message from %s: %s', nick, message);
-            bot.say(nick, 'Hey ' + nick + '. Need help? Please post in our forums at http://cncnet.org/forums! and one of my comrades will assist!');
+            bot.say(nick, 'Hey ' + nick + '. Need help? Please post in our forums at http://cncnet.org/forums and one of my comrades will assist!');
         });
     }
 };
 
+// @TODO: These two functions are the same, combine
 
 /***
- * StopDancing
- * When the Bot has embarrassed its self enough...
+ * Pause Chat
  */
 
-var stopDancing = function (time) {
+var pauseChat = function (time) {
+    canTalk = false;
+
+    setTimeout(function () {
+        canTalk = true;
+    }, time);
+};
+
+/***
+ * When the Bot has embarrassed its self enough...
+ */
+var pauseDancing = function (time) {
     canDance = false;
 
     setTimeout(function () {

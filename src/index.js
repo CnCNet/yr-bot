@@ -18,4 +18,4 @@ msgListener.pm(Bot);
 
 // Auto announce message to lobbies
 // @TODO: Read from a database, and update via a UI
-msgAnnouncer.toAllLobbies(Bot, "#cncnet", "Welcome. Please post any problems at http://cncnet.org/forums. Slow game/black screen? Enable TS-DDRAW in Client Options", 30000);
+msgAnnouncer.toAllLobbies(Bot, "#cncnet", "Welcome. Please post any problems at http://cncnet.org/forums. Slow game/black screen? Enable TS-DDRAW in Client Options", 0.3);

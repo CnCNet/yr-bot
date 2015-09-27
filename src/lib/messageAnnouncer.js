@@ -2,11 +2,11 @@
  *  messageAnnouncer.js
  * @type {{global: Function, bar: Function}}
  */
-
 module.exports = {
     toAllLobbies: function (bot, lobby, msg, time) {
-        setTimeout(function () {
+        setInterval(function () {
             bot.say(lobby, msg);
-        }, time);
+        }, time * 60 * 10000);
     }
 };
+
