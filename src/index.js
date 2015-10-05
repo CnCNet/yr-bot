@@ -16,10 +16,10 @@ var Bot = new irc.Client(
 );
 
 var messages = [
-    { message: "Hey Grant-" },
-    { message: "Psst Grant-" },
-    { message: "Pssssst" },
-    { message: "WTF end of the line" }
+    { message: "Msg 1" },
+    { message: "Msg 2" },
+    { message: "Msg 3" },
+    { message: "Msg 4" }
 ];
 
 // Upon the Bot joining the lobby
@@ -34,7 +34,7 @@ Bot.addListener('join', function (channel, who) {
 
     if (who == config.nickname && channel == '#cncnet') {
         // Announce messages to #cncnet
-        msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3);
+        msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3); // 3 minutes
     }
 });
 

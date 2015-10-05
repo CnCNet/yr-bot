@@ -1,4 +1,5 @@
-var color = require('irc-colors');
+var color = require('irc-colors'),
+    msgHandle;
 
 /***
  * Announce to all lobbies after a period of time
@@ -7,10 +8,20 @@ var color = require('irc-colors');
 
 module.exports = {
     toAllLobbies: function (bot, channel, msgs, time) {
-        setInterval(function() {
-            msgs.forEach(function(msg) {
-                bot.say(channel, color.pink(msg.message));
-            });
-        }, 30000);
+
+        var allMessages = msgs,
+            i = 0;
+
+        // cycleHandle can be used to stop interval
+        msgHandle = setInterval(function () {
+
+            if (i < allMessages.length) {
+                bot.say(channel, color.pink(allMessages[i].message));
+            }else if(i >= allMessages.length ){
+                i = -1;
+            }
+
+            i++; // increase because we want to go to next element
+        }, time * 60 * 10000);
     }
 };
