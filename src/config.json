@@ -1,5 +1,5 @@
 {
-  "channels": ["#cncnet"],
-  "server": "irc.freenode.org",
+  "channels": ["#cncnet-yr"],
+  "server": "irc.cncnet.org",
   "nickname": "YuriBot"
 }
