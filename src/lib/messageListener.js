@@ -54,8 +54,11 @@ module.exports = {
     },
     pm: function (bot) {
         bot.addListener('pm', function (nick, message) {
-            console.log('Got private message from %s: %s', nick, message);
-            bot.say(nick, 'Hey ' + nick + '. Need help? Please post in our forums at http://cncnet.org/forums and one of my comrades will assist!');
+            if (canTalk) {
+                console.log('Got private message from %s: %s', nick, message);
+                bot.say(nick, 'Hey ' + nick + '. Need help? Please post in our forums at http://cncnet.org/forums and one of my comrades will assist!');
+                pauseChat(2000);
+            }
         });
     }
 };
