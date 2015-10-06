@@ -43,7 +43,7 @@ Bot.addListener('join', function (channel, who) {
 
         // Begin timer for announcing top tip messages to #cncnet after a minute of first set
         setTimeout(function () {
-            msgAnnouncer.toAllLobbies(Bot, "#cncnet", toptips_messages, 0.5); // 6 minutes
+            msgAnnouncer.toAllLobbies(Bot, "#cncnet", toptips_messages, 0.6); // 6 minutes
         }, 10000);
     }
 });
