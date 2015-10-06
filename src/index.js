@@ -9,17 +9,22 @@ var Bot = new irc.Client(
     config.server,
     config.nickname, {
         channels: config.channels,
-        debug: true,
+        debug: false,
         floodProtection: true,
-        floodProtectionDelay: 1000
+        floodProtectionDelay: 2000
     }
 );
 
-var messages = [
-    { message: "Msg 1" },
-    { message: "Msg 2" },
-    { message: "Msg 3" },
-    { message: "Msg 4" }
+// @TODO: Add into config
+var standard_messages = [
+    {message: "Welcome to Yuri's Revenge Online. Have a crash, or problem playing? Post in our forums at http://cncnet.org/forums to report any bugs!"},
+    {message: "Encountered a problem with the client? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"}
+];
+
+var toptips_messages = [
+    {message: "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter"},
+    {message: "Commander, Good News! New updates coming soon will include a Red Alert 2 Classic Mode!"},
+    {message: "Did you know, it's quicker to deploy your MCV by pressing N, followed by D on your keyboard?"}
 ];
 
 // Upon the Bot joining the lobby
@@ -33,8 +38,13 @@ Bot.addListener('join', function (channel, who) {
     msgListener.pm(Bot);
 
     if (who == config.nickname && channel == '#cncnet') {
-        // Announce messages to #cncnet
-        msgAnnouncer.toAllLobbies(Bot, "#cncnet", messages, 0.3); // 3 minutes
+        // Begin announcing standard messages to #cncnet
+        msgAnnouncer.toAllLobbies(Bot, "#cncnet", standard_messages, 0.3); // 3 minutes
+
+        // Begin timer for announcing top tip messages to #cncnet after a minute of first set
+        setTimeout(function () {
+            msgAnnouncer.toAllLobbies(Bot, "#cncnet", toptips_messages, 0.5); // 6 minutes
+        }, 10000);
     }
 });
 
