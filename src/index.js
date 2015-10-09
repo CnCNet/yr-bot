@@ -18,7 +18,7 @@ var Bot = new irc.Client(
 // @TODO: Add into config
 var standard_messages = [
     {message: "Welcome to Yuri's Revenge Online. Have a crash, or problem playing? Post in our forums at http://cncnet.org/forums to report any bugs!"},
-    {message: "Encountered a problem with the client? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"}
+    {message: "Kaboom? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"}
 ];
 
 var toptips_messages = [
@@ -29,15 +29,13 @@ var toptips_messages = [
 
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
-    console.log('%s has joined %s', who, channel);
-
-    // Listen for keywords, and trigger a reply
-    msgListener.lobby(Bot);
-
-    // Listen for private messages to bot and trigger a reply
-    msgListener.pm(Bot);
-
     if (who == config.nickname && channel == '#cncnet') {
+        // Listen for keywords, and trigger a reply
+        msgListener.lobby(Bot);
+
+        // Listen for private messages to bot and trigger a reply
+        msgListener.pm(Bot);
+
         // Begin announcing standard messages to #cncnet
         msgAnnouncer.toAllLobbies(Bot, "#cncnet", standard_messages, 0.3); // 3 minutes
 
@@ -46,21 +44,4 @@ Bot.addListener('join', function (channel, who) {
             msgAnnouncer.toAllLobbies(Bot, "#cncnet", toptips_messages, 0.6); // 6 minutes
         }, 10000);
     }
-});
-
-
-Bot.addListener('error', function (message) {
-    console.error('ERROR: %s: %s', message.command, message.args.join(' '));
-});
-
-Bot.addListener('pm', function (nick, message) {
-    console.log('Got private message from %s: %s', nick, message);
-});
-
-Bot.addListener('part', function (channel, who, reason) {
-    console.log('%s has left %s: %s', who, channel, reason);
-});
-
-Bot.addListener('kick', function (channel, who, by, reason) {
-    console.log('%s was kicked from %s by %s: %s', who, channel, by, reason);
 });
