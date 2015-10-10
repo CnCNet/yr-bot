@@ -13,7 +13,7 @@ var server = process.env.SERVER,
     password = process.env.PASSWORD;
 
 var Bot = new irc.Client(server, nickname, {
-    debug: true,
+    debug: false,
     channels: [channels]
 });
 
