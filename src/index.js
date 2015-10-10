@@ -21,7 +21,8 @@ var Bot = new irc.Client(server, nickname, {
 var standard_messages = [
     {message: "Welcome. Please post any problems at http://cncnet.org/forums Slow game/black screen? Enable TS-DDRAW in Client Options"},
     {message: "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"},
-    {message: "Maps not showing correctly? Ensure you have NET Framework 4 installed"}
+    {message: "Maps not showing correctly? Ensure you have NET Framework 4 installed"},
+    {message: "Commanders, don't be fooled. Remember not all custom maps are fair. Some have advantages only visible to one player, such as hidden bases for example."}
 ];
 
 var toptips_messages = [
@@ -49,6 +50,6 @@ Bot.addListener('join', function (channel, who) {
 
         setTimeout(function () {
             msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 6 minutes
-        }, 1.5 * 60 * 10000);
+        }, 0.55 * 60 * 10000);
     }
 });
