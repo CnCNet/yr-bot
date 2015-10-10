@@ -1,35 +1,43 @@
 #!/usr/bin/env node
 
+require('dotenv').config({silent: true});
+
 var irc = require('irc'),
-    config = require('./config'),
     msgListener = require('./lib/messageListener'),
     msgAnnouncer = require('./lib/messageAnnouncer');
 
-var Bot = new irc.Client(
-    config.server,
-    config.nickname, {
-        channels: config.channels,
-        debug: false,
-        floodProtection: true,
-        floodProtectionDelay: 2000
-    }
-);
+var server = process.env.SERVER,
+    nickname = process.env.NICKNAME,
+    channels = process.env.CHANNELS,
+    username = process.env.USERNAME,
+    password = process.env.PASSWORD;
 
-// @TODO: Add into config
+var Bot = new irc.Client(server, nickname, {
+    debug: true,
+    channels: [channels]
+});
+
+// TODO: Add into config
 var standard_messages = [
-    {message: "Welcome to Yuri's Revenge Online. Have a crash, or problem playing? Post in our forums at http://cncnet.org/forums to report any bugs!"},
-    {message: "Kaboom? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"}
+    {message: "Welcome. Please post any problems at http://cncnet.org/forums Slow game/black screen? Enable TS-DDRAW in Client Options"},
+    {message: "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"},
+    {message: "Maps not showing correctly? Ensure you have NET Framework 4 installed"}
 ];
 
 var toptips_messages = [
-    {message: "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter"},
-    {message: "Commander, Good News! New updates coming soon will include a Red Alert 2 Classic Mode!"},
-    {message: "Did you know, it's quicker to deploy your MCV by pressing N, followed by D on your keyboard?"}
+    {message: "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter."},
+    {message: "Did you know, it's quicker to deploy your MCV by pressing N, followed by D on your keyboard?"},
+    {message: "Did you know, using the T hotkey whilst selecting a unit will 'select all' units of that type?"}
 ];
 
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
-    if (who == config.nickname && channel == '#cncnet') {
+    if (who == nickname && channel == channels) {
+
+        // Ops status
+        Bot.send('OPER', username, password);
+        Bot.send('samode', channels, '+o', nickname);
+
         // Listen for keywords, and trigger a reply
         msgListener.lobby(Bot);
 
@@ -37,11 +45,10 @@ Bot.addListener('join', function (channel, who) {
         msgListener.pm(Bot);
 
         // Begin announcing standard messages to #cncnet
-        msgAnnouncer.toAllLobbies(Bot, "#cncnet", standard_messages, 0.3); // 3 minutes
+        msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 3 minutes
 
-        // Begin timer for announcing top tip messages to #cncnet after a minute of first set
         setTimeout(function () {
-            msgAnnouncer.toAllLobbies(Bot, "#cncnet", toptips_messages, 0.6); // 6 minutes
-        }, 10000);
+            msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 6 minutes
+        }, 1.5 * 60 * 10000);
     }
 });

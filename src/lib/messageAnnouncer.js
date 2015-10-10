@@ -12,16 +12,14 @@ module.exports = {
         var allMessages = msgs,
             i = 0;
 
-        // cycleHandle can be used to stop interval
+        // Message Handle can be used to stop interval
         msgHandle = setInterval(function () {
-
             if (i < allMessages.length) {
                 bot.say(channel, color.pink(allMessages[i].message));
-            }else if(i >= allMessages.length ){
+            } else if (i >= allMessages.length) {
                 i = -1;
             }
-
-            i++; // increase because we want to go to next element
+            i++; // increase because we want to go to next message
         }, time * 60 * 10000);
     }
 };

@@ -22,9 +22,10 @@
   },
   "homepage": "https://github.com/CnCNet/yr-bot",
   "dependencies": {
+    "dotenv": "^1.2.0",
     "irc": "^0.3.11",
-    "irc-colors": "^1.1.0"      
-  },    
+    "irc-colors": "^1.1.0"
+  },
   "devDependencies": {
     "pm2": "^0.12.12"
   }
