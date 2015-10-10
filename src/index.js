@@ -22,7 +22,7 @@ var standard_messages = [
     {message: "Welcome. Please post any problems at http://cncnet.org/forums Slow game/black screen? Enable TS-DDRAW in Client Options"},
     {message: "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"},
     {message: "Maps not showing correctly? Ensure you have NET Framework 4 installed"},
-    {message: "Commanders, don't be fooled. Remember not all custom maps are fair. Some have advantages only visible to one player, such as hidden bases for example."}
+    {message: "Always remember, Custom maps can be customized to benefit certain starting positions more than others, pick and play your custom maps with care."}
 ];
 
 var toptips_messages = [
@@ -46,10 +46,10 @@ Bot.addListener('join', function (channel, who) {
         msgListener.pm(Bot);
 
         // Begin announcing standard messages to #cncnet
-        msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 3 minutes
+        msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 2 minutes
 
         setTimeout(function () {
-            msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 6 minutes
+            msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 4 minutes
         }, 0.55 * 60 * 10000);
     }
 });
