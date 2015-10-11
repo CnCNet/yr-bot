@@ -27,6 +27,10 @@ module.exports = {
                     pauseChat(20000);
                 }
 
+                if (message.match(/custom maps/) && canTalk){
+                    bot.say(to, 'You can add and play Custom maps by copying them into the \'Maps > Custom\' folder found within your game directory.');
+                }
+
                 if (message.match(/dance/) && canDance) {
                     bot.say(to, from + ' Fool. You can\'t control me!');
 
