@@ -3,6 +3,7 @@
 require('dotenv').config({silent: true});
 
 var irc = require('irc'),
+    logger = require('winston'),
     msgListener = require('./lib/messageListener'),
     msgAnnouncer = require('./lib/messageAnnouncer');
 
@@ -13,7 +14,7 @@ var server = process.env.SERVER,
     password = process.env.PASSWORD;
 
 var Bot = new irc.Client(server, nickname, {
-    debug: false,
+    debug: true,
     channels: [channels]
 });
 
@@ -31,13 +32,22 @@ var toptips_messages = [
     {message: "Did you know, using the T hotkey whilst selecting a unit will 'select all' units of that type?"}
 ];
 
+
+logger.add(logger.transports.File, {filename: 'cncnet-yr-chatlog.log'});
+logger.remove(logger.transports.Console);
+
+
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
     if (who == nickname && channel == channels) {
 
+        logger.info(who + ' joined ' + channel);
+
         // Ops status
         Bot.send('OPER', username, password);
         Bot.send('samode', channels, '+o', nickname);
+
+        logger.info(who + ' is now an operator on ' + channel);
 
         // Listen for keywords, and trigger a reply
         msgListener.lobby(Bot);

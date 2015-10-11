@@ -1,4 +1,5 @@
-var canTalk = true,
+var logger = require('winston'),
+    canTalk = true,
     canDance = true;
 
 /***
@@ -11,7 +12,6 @@ module.exports = {
 
             if (to.match(/^[#&]/)) {
 
-                // TODO: This should probably be in a switch
                 if (message.match(/kaboom/) && canTalk) {
                     bot.say(to, 'Hey ' + from + '! Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums');
                     pauseChat(20000);
@@ -29,9 +29,11 @@ module.exports = {
 
                 if (message.match(/custom maps/) || message.match(/maps/) && canTalk) {
                     bot.say(to, 'You can add and play Custom maps by copying them into the \'Maps > Custom\' folder found within your game directory.');
+                    pauseChat(20000);
                 }
 
                 if (message.match(/dance/) && canDance) {
+                    logger.info(from + ' found the easteregg');
                     bot.say(to, from + ' Fool. You can\'t control me!');
 
                     setTimeout(function () {
@@ -54,12 +56,14 @@ module.exports = {
                     bot.say(to, 'I cannot be overcome');
                 }
             }
+
+            logger.info(from + message);
         });
     },
     pm: function (bot) {
         bot.addListener('pm', function (nick, message) {
             if (canTalk) {
-                console.log('Got private message from %s: %s', nick, message);
+                logger.info('pm received:' + nick + message);
                 bot.say(nick, 'Hey ' + nick + '. Need help? Please post in our forums at http://cncnet.org/forums and one of my comrades will assist!');
                 pauseChat(2000);
             }
