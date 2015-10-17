@@ -44,10 +44,10 @@ Bot.addListener('join', function (channel, who) {
         logger.info(who + ' joined ' + channel);
 
         // Ops status
-        Bot.send('OPER', username, password);
-        Bot.send('samode', channels, '+o', nickname);
+        //Bot.send('OPER', username, password);
+        //Bot.send('samode', channels, '+o', nickname);
 
-        logger.info(who + ' is now an operator on ' + channel);
+        //logger.info(who + ' is now an operator on ' + channel);
 
         // Listen for keywords, and trigger a reply
         msgListener.lobby(Bot);
@@ -56,7 +56,7 @@ Bot.addListener('join', function (channel, who) {
         msgListener.pm(Bot);
 
         // Begin announcing standard messages to #cncnet
-        msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 2 minutes
+        //msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 2 minutes
 
         setTimeout(function () {
             msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 4 minutes
