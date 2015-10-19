@@ -1,41 +1,18 @@
 #!/usr/bin/env node
 
-require('dotenv').config({silent: true});
+require('irc-colors');
 
 var irc = require('irc'),
-    logger = require('winston'),
-//msgListener = require('./lib/messageListener'),
-//msgAnnouncer = require('./lib/messageAnnouncer'),
     PrivateMessage = require('./lib/PrivateMessage.js'),
-    Lobby = require('./lib/Lobby.js');
+    Lobby = require('./lib/Lobby.js'),
+    Environment = require('./Environment.js');
 
+var Env = new Environment();
 
-var server = process.env.SERVER,
-    nickname = process.env.NICKNAME,
-    channels = process.env.CHANNELS,
-    username = process.env.USERNAME,
-    password = process.env.PASSWORD;
-
-var Bot = new irc.Client(server, nickname, {
+var Bot = new irc.Client(env.server, env.server, {
     debug: true,
-    channels: [channels]
+    channels: env.channels
 });
-
-// TODO: Add into config
-var standard_messages = [
-
-    {message: "Welcome. Please post any problems at http://cncnet.org/forums Slow game/black screen? Enable TS-DDRAW in Client Options"},
-    {message: "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"},
-    {message: "Maps not showing correctly? Ensure you have NET Framework 4 installed"},
-    {message: "Always remember, Custom maps can be customized to benefit certain starting positions more than others, pick and play your custom maps with care."}
-
-];
-
-var toptips_messages = [
-    {message: "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter."},
-    {message: "Did you know, it's quicker to deploy your MCV by pressing N, followed by D on your keyboard?"},
-    {message: "Did you know, using the T hotkey whilst selecting a unit will 'select all' units of that type?"}
-];
 
 var message = {
     pm: 'If you have a question or need help with your game. Please post in our forums - http://cncnet.org/forums',
@@ -51,36 +28,28 @@ var message = {
         message_2: "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums",
         message_3: "Maps not showing correctly? Ensure you have NET Framework 4 installed",
         message_4: "Always remember, Custom maps can be customized to benefit certain starting positions more than others, pick and play your custom maps with care."
+    },
+    tips: {
+        message_1: "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter.",
+        message_2: "Did you know, it's quicker to deploy your MCV by pressing N, followed by D on your keyboard?",
+        message_3: "Did you know, using the T hotkey whilst selecting a unit will 'select all' units of that type?"
     }
 };
 
-
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
-    if (who == nickname && channel == channels) {
+    if (who === Env.nickname && channel === Env.channels) {
 
         // Ops status
-        //Bot.send('OPER', username, password);
-        //Bot.send('samode', channels, '+o', nickname);
-
-        // Listen for keywords, and trigger a reply
-        //msgListener.lobby(Bot);
-
-        // Listen for private messages to bot and trigger a reply
-        //msgListener.pm(Bot);
+        Bot.send('OPER', Env.username, Env.password);
+        Bot.send('samode', Env.channels, '+o', Env.nickname);
 
         var pmListener = new PrivateMessage(Bot);
         pmListener.reply(message.pm);
 
         var lobbyListener = new Lobby(Bot);
+
         lobbyListener.reply(message.lobby);
         lobbyListener.announce(message.announcements);
-
-        // Begin announcing standard messages to #cncnet
-        //msgAnnouncer.toAllLobbies(Bot, channels, standard_messages, 0.2); // 2 minutes
-
-        //setTimeout(function () {
-        //    msgAnnouncer.toAllLobbies(Bot, channels, toptips_messages, 0.4); // 4 minutes
-        //}, 0.55 * 60 * 10000);
     }
 });

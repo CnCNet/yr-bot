@@ -57,7 +57,6 @@ function Lobby(bot) {
     }
 }
 
-
 /***
  * Check messages for flooding
  * @param obj
