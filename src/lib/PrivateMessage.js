@@ -1,3 +1,5 @@
+module.exports = PrivateMessage;
+
 /***
  * PrivateMessage
  * @param bot
@@ -7,8 +9,7 @@ function PrivateMessage(bot) {
 
     this.reply = function (msg) {
         bot.addListener('pm', function (nick, message) {
-            bot.say(nick, 'Hey ' + nick + msg);
+            bot.say(nick, 'Hey ' + nick + ' ' + msg);
         });
     };
 }
-module.exports = PrivateMessage;

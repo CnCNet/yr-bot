@@ -1,15 +1,23 @@
 module.exports = Lobby;
 
+var color = require('irc-colors');
+var BanCheck = require('./BanCheck.js');
+
 /***
  * Lobby
  * @param bot
  * @constructor
  */
 function Lobby(bot) {
-    this.reply = function (msg) {
+
+    /***
+     * Reply
+     * @param msg
+     * @param nickname
+     */
+    this.reply = function (msg, nickname) {
 
         var users = [];
-
         bot.addListener('message', function (from, to, message) {
 
             checkForFlooding(from, users, message, bot, to);
@@ -17,44 +25,46 @@ function Lobby(bot) {
             if (to.match(/^[#&]/)) {
 
                 if (message.match(/hello/) || message.match(/hi/)) {
-                    bot.say(to, msg.hello);
+                    talk(bot, from, to, msg.hello);
                 }
 
                 if (message.match(/kaboom/)) {
-                    bot.say(to, 'Hey ' + from + '! ' + msg.kaboom);
+                    talk(bot, from, to, msg.kaboom);
                 }
 
                 if (message.match(/crash/)) {
-                    bot.say(to, 'Hey ' + from + '! ' + msg.crash);
+                    talk(bot, from, to, msg.crash);
                 }
 
-                if (message.match(/help/) && canTalk) {
-                    bot.say(to, 'Hey ' + from + '! ' + msg.help);
+                if (message.match(/help/)) {
+                    talk(bot, from, to, msg.help);
                 }
 
                 if (message.match(/custom maps/) || message.match(/maps/)) {
-                    bot.say(to, 'Hey ' + from + '! ' + msg.maps);
+                    talk(bot, from, to, msg.maps);
                 }
             }
         });
     };
 
-    // @TODO
-    this.announce = function () {
-        var allMessages = msgs,
-            i = 0,
-            timeHandle;
+    /***
+     * Announce to lobby
+     * @param msgs
+     * @param time
+     */
+    this.announce = function (channels, msgs, time, style) {
+        var i = 0;
 
         // Message Handle can be used to stop interval
-        timeHandle = setInterval(function () {
-            if (i < allMessages.length) {
-                bot.say(channel, color.pink(allMessages[i].message));
-            } else if (i >= allMessages.length) {
+        setInterval(function () {
+            if (i < msgs.length) {
+                bot.say(channels, color[style](msgs[i].message));
+            } else if (i >= msgs.length) {
                 i = -1;
             }
             i++; // increase because we want to go to next message
         }, time * 60 * 10000);
-    }
+    };
 }
 
 /***
@@ -151,16 +161,40 @@ var createTimer = function (user) {
  */
 var muteUser = function (user, time, bot) {
 
+    var ban = new BanCheck();
+
     if (user.muted) {
-        console.log('Muting player' + user.nick);
+
+        ban.addBan(user.nick);
+
         //bot.send('mode', '#cncnet-yr', '+b', user.nick + '!*@*');
 
         setTimeout(function () {
-            console.log('Un-muting player' + user.nick);
-            //bot.send('mode', '#cncnet-yr', '-b', user.nick + '!*@*');
+            bot.send('mode', '#cncnet-yr', '-b', user.nick + '!*@*');
         }, time * 60 * 10000);
     }
 
 };
 
+/***
+ * Talk to lobby
+ * @param bot
+ * @param to
+ * @param message
+ */
 
+var canTalk = true;
+var talk = function (bot, from, to, message) {
+
+    if (canTalk) {
+        bot.say(to, 'Hey ' + from + '! ' + message);
+        canTalk = false;
+    } else {
+        console.log('waiting for timer to finish');
+    }
+
+    setTimeout(function () {
+        canTalk = true;
+        console.log('Can talk again');
+    }, 3000);
+};
