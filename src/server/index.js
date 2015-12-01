@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
 require('dotenv').config({silent: true});
+fs = require('fs');
 
-var irc = require('irc'),
-    PrivateMessage = require('./lib/PrivateMessage.js'),
-    Lobby = require('./lib/Lobby.js'),
-    BanCheck = require('./lib/BanCheck.js');
+var irc = require('irc');
+var PrivateMessage = require('./lib/PrivateMessage.js');
+var Lobby = require('./lib/Lobby.js');
 
-var server = process.env.SERVER,
-    nickname = process.env.NICKNAME,
-    channels = process.env.CHANNELS,
-    username = process.env.USERNAME,
-    password = process.env.PASSWORD;
+var server = process.env.SERVER;
+var nickname = process.env.NICKNAME;
+var channels = process.env.CHANNELS;
+var username = process.env.USERNAME;
+var password = process.env.PASSWORD;
 
 var Bot = new irc.Client(server, nickname, {
     debug: true,
@@ -43,14 +43,20 @@ var message = {
 
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
+
     if (who === nickname && channel === channels) {
 
-        var bans = new BanCheck();
-        bans.removeAll();
+        var d = new Date();
+        var n = d.getTime();
+        var log = '{"time"' + ':' + n + ',' + '"nick"' + ':' + JSON.stringify(nickname) + '}' + '\r\n';
+
+        fs.appendFile('yuri-bot-startup-log.json', log , function (err) {
+            if (err) return console.log(err);
+        });
 
         // Ops status
-        //Bot.send('OPER', username, password);
-        //Bot.send('samode', channels, '+o', nickname);
+        Bot.send('OPER', username, password);
+        Bot.send('samode', channels, '+o', nickname);
 
         var directMessages = new PrivateMessage(Bot);
         var lobby = new Lobby(Bot);
@@ -65,4 +71,8 @@ Bot.addListener('join', function (channel, who) {
         lobby.announce(channels, message.announcements, 0.25, 'pink');
         lobby.announce(channels, message.tips, 0.45, 'blue');
     }
+});
+
+Bot.addListener('error', function(message) {
+    console.log('error: ', message);
 });

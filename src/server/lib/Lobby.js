@@ -3,6 +3,7 @@ module.exports = Lobby;
 var color = require('irc-colors');
 var BanCheck = require('./BanCheck.js');
 
+
 /***
  * Lobby
  * @param bot
@@ -103,7 +104,7 @@ function checkForFlooding(obj, array, message, bot, to) {
                     // User has ignored warnings, mute.
                     bot.say(to, '"He shall serve me well" Player ' + user.nick + ' has been muted for 15 minutes');
                     user.muted = true;
-                    muteUser(user.nick, 0.15, bot);
+                    muteUser(user, 0.15, bot);
 
                 } else if (!user.warned) {
 
@@ -163,17 +164,19 @@ var muteUser = function (user, time, bot) {
 
     var ban = new BanCheck();
 
+    console.log('muting user', user.muted, user);
+
     if (user.muted) {
+        console.log('adding ban to ', user.nick);
 
         ban.addBan(user.nick);
 
-        //bot.send('mode', '#cncnet-yr', '+b', user.nick + '!*@*');
+        bot.send('mode', '#cncnet-yr', '+b', user.nick + '!*@*');
 
         setTimeout(function () {
             bot.send('mode', '#cncnet-yr', '-b', user.nick + '!*@*');
         }, time * 60 * 10000);
     }
-
 };
 
 /***
@@ -189,12 +192,9 @@ var talk = function (bot, from, to, message) {
     if (canTalk) {
         bot.say(to, 'Hey ' + from + '! ' + message);
         canTalk = false;
-    } else {
-        console.log('waiting for timer to finish');
     }
 
     setTimeout(function () {
         canTalk = true;
-        console.log('Can talk again');
     }, 3000);
 };
