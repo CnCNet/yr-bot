@@ -13,7 +13,7 @@ A simple nodejs application to have a bot appear in the cncnet irc channel.
 ##Installation
 
 * Run in the command line: `npm install`
-* Launch by running `pm2 start src/index.js`
+* Launch by running `pm2 start src/client/bot.js`
 
 ##License 
 

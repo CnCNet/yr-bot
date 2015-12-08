@@ -44,6 +44,10 @@ function Lobby(bot) {
                 if (message.match(/custom maps/) || message.match(/maps/)) {
                     talk(bot, from, to, msg.maps);
                 }
+
+                if (message.match(/!help/)){
+                    talk(bot, from, to, msg.commands);
+                }
             }
         });
     };
@@ -104,7 +108,7 @@ function checkForFlooding(obj, array, message, bot, to) {
                     // User has ignored warnings, mute.
                     bot.say(to, '"He shall serve me well" Player ' + user.nick + ' has been muted for 15 minutes');
                     user.muted = true;
-                    muteUser(user, 0.15, bot);
+                    muteUser(user, 15, bot);
 
                 } else if (!user.warned) {
 
@@ -175,7 +179,7 @@ var muteUser = function (user, time, bot) {
 
         setTimeout(function () {
             bot.send('mode', '#cncnet-yr', '-b', user.nick + '!*@*');
-        }, time * 60 * 10000);
+        }, time * 60 * 1000);
     }
 };
 

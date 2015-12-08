@@ -19,17 +19,18 @@ var Bot = new irc.Client(server, nickname, {
 });
 
 var message = {
-    pm: 'If you have a question or need help with your game. Please post in our forums - http://cncnet.org/forums',
+    pm: 'If you have a question or need help with your game. Please post in our forums - cncnet.org/forums',
     lobby: {
-        hello: '"Come to Yuri!" If you need me i\'ll be mind controlling this lobby chat',
-        crash: 'Are you having Client or Game crashes? Tell us in our forums at http://cncnet.org/forums',
-        kaboom: 'Are you having "Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at http://cncnet.org/forums',
-        help: 'Need help? Please post at our forums http://cncnet.org/forums',
-        maps: 'You can add and play Custom maps by copying them into the \'Maps > Custom\' folder found within your game directory.'
+        hello: 'Hello, for help or questions please go to cncnet.org/forums.',
+        crash: 'Are you having Client or Game crashes? Tell us in our forums at cncnet.org/forums',
+        kaboom: '"Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at cncnet.org/forums',
+        help: 'Need help? Please post at our forums cncnet.org/forums',
+        maps: 'You can add and play Custom maps by copying them into the \'Maps > Custom\' folder found within your game directory.',
+        commands: 'List of commands include, crash, kaboom, help, maps, for anything else visit our forum at cncnet.org/forums'
     },
     announcements: [
-        {"message": "Welcome. Please post any problems at http://cncnet.org/forums Slow game/black screen? Enable TS-DDRAW in Client Options"},
-        {"message": "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at http://cncnet.org/forums"}
+        {"message": "Welcome to Yuri's Revenge Online. Slow game/black screen? Enable TS-DDRAW in Client Options"},
+        {"message": "Kaboom or Crashes? Please post your cncnetclient.log found in your game directory at cncnet.org/forums"}
     ],
     tips: [
         {"message": "Did you know, team chat is available in game by typing with Backspace? Chat to everyone in game by typing with Enter."},
@@ -43,14 +44,13 @@ var message = {
 
 // Upon the Bot joining the lobby
 Bot.addListener('join', function (channel, who) {
-
     if (who === nickname && channel === channels) {
 
         var d = new Date();
         var n = d.getTime();
         var log = '{"time"' + ':' + n + ',' + '"nick"' + ':' + JSON.stringify(nickname) + '}' + '\r\n';
 
-        fs.appendFile('yuri-bot-startup-log.json', log , function (err) {
+        fs.appendFile('yuri-bot-startup-log.json', log, function (err) {
             if (err) return console.log(err);
         });
 
@@ -68,11 +68,15 @@ Bot.addListener('join', function (channel, who) {
         lobby.reply(message.lobby, nickname);
 
         // Auto announce to lobby
-        lobby.announce(channels, message.announcements, 0.25, 'pink');
-        lobby.announce(channels, message.tips, 0.45, 'blue');
+        lobby.announce(channels, message.announcements, 0.4, 'pink');
+        lobby.announce(channels, message.tips, 0.95, 'blue');
     }
 });
 
-Bot.addListener('error', function(message) {
+Bot.addListener('error', function (message) {
+    fs.appendFile('yuri-bot-error-log.json', message, function (err) {
+        if (err) return console.log(err);
+    });
+
     console.log('error: ', message);
 });
