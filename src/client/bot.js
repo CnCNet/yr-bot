@@ -19,11 +19,11 @@ var Bot = new irc.Client(server, nickname, {
 });
 
 var message = {
-    pm: 'If you have a question or need help with your game. Please post in our forums - cncnet.org/forums',
+    pm: 'If you have a question or need help with your game, please post in our forums at cncnet.org/forums',
     lobby: {
-        hello: 'Hello, for help or questions please go to cncnet.org/forums.',
-        crash: 'Are you having Client or Game crashes? Tell us in our forums at cncnet.org/forums',
-        kaboom: '"Kaboom" trouble? Please post your cncnetclient.log (from your game directory) in our forums at cncnet.org/forums',
+        hello: 'Need help or have a question? Visit cncnet.org/forums',
+        crash: 'Are you having client or game crashes? Tell us in our forums at cncnet.org/forums',
+        kaboom: '"Kaboom" trouble? Please post your cncnetclient.log (found in your game directory) in our forums at cncnet.org/forums',
         help: 'Need help? Please post at our forums cncnet.org/forums',
         maps: 'You can add and play Custom maps by copying them into the \'Maps > Custom\' folder found within your game directory.',
         commands: 'List of commands include, crash, kaboom, help, maps, for anything else visit our forum at cncnet.org/forums'
